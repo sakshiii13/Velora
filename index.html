@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WHIOLD</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+      .whiold-loader-container {
+        --whiold-50: #FAF3F0;
+        --whiold-100: #F2E1D9;
+        --whiold-200: #E5C2B3;
+        --whiold-300: #D59E86;
+        --whiold-400: #C57A58;
+        --whiold-500: #BA704F;
+        --whiold-600: #9F5737;
+
+        --whiold-loader-overlay-bg: rgba(255, 255, 255, 0.6);
+        --whiold-loader-overlay-blur: 2px;
+        --whiold-loader-glow: rgba(186, 112, 79, 0.16);
+        --whiold-loader-glow-blur: 70px;
+
+        --whiold-loader-ring-size: 108px;
+        --whiold-loader-ring-thickness: 5px;
+        --whiold-loader-ring-sweep: conic-gradient(from 0deg, transparent 0%, var(--whiold-300) 30%, var(--whiold-500) 65%, var(--whiold-600) 100%);
+
+        --whiold-loader-ring-size-inner: 68px;
+        --whiold-loader-ring-thickness-inner: 4px;
+        --whiold-loader-ring-sweep-inner: conic-gradient(from 180deg, transparent 0%, var(--whiold-200) 40%, var(--whiold-400) 100%);
+
+        --whiold-loader-logo-size: 46px;
+        --whiold-loader-logo-glow: 0 0 18px rgba(186, 112, 79, 0.4);
+
+        --whiold-loader-subtext-color: #A5978C;
+        --whiold-loader-dot-color: var(--whiold-500);
+
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--whiold-loader-overlay-bg);
+        backdrop-filter: blur(var(--whiold-loader-overlay-blur)) saturate(140%);
+        -webkit-backdrop-filter: blur(var(--whiold-loader-overlay-blur)) saturate(140%);
+        font-family: "Poppins", sans-serif;
+        transition: opacity 0.4s ease;
+      }
+
+      .whiold-loader-container.whiold-loader-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .whiold-loader-orb {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--whiold-loader-glow);
+        filter: blur(var(--whiold-loader-glow-blur));
+        pointer-events: none;
+      }
+      .whiold-loader-orb.o1 { width: 380px; height: 380px; top: -100px; left: -80px; animation: whiold-drift 4.5s ease-in-out infinite; }
+      .whiold-loader-orb.o2 { width: 420px; height: 420px; bottom: -120px; right: -100px; animation: whiold-drift 4.5s ease-in-out infinite reverse; }
+
+      @keyframes whiold-drift {
+        0%, 100% { transform: scale(1) translate(0,0); opacity: 0.75; }
+        50% { transform: scale(1.15) translate(16px, 10px); opacity: 1; }
+      }
+
+      .whiold-loader-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .whiold-spinner {
+        position: relative;
+        width: var(--whiold-loader-ring-size);
+        height: var(--whiold-loader-ring-size);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .whiold-ring-outer, .whiold-ring-inner {
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .whiold-ring-outer {
+        width: var(--whiold-loader-ring-size);
+        height: var(--whiold-loader-ring-size);
+        background: var(--whiold-loader-ring-sweep);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--whiold-loader-ring-thickness)), #000 calc(100% - var(--whiold-loader-ring-thickness) + 1px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - var(--whiold-loader-ring-thickness)), #000 calc(100% - var(--whiold-loader-ring-thickness) + 1px));
+        animation: whiold-spin-cw 1.6s linear infinite;
+      }
+
+      .whiold-ring-inner {
+        width: var(--whiold-loader-ring-size-inner);
+        height: var(--whiold-loader-ring-size-inner);
+        background: var(--whiold-loader-ring-sweep-inner);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--whiold-loader-ring-thickness-inner)), #000 calc(100% - var(--whiold-loader-ring-thickness-inner) + 1px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - var(--whiold-loader-ring-thickness-inner)), #000 calc(100% - var(--whiold-loader-ring-thickness-inner) + 1px));
+        animation: whiold-spin-ccw 1.15s linear infinite;
+      }
+
+      @keyframes whiold-spin-cw { to { transform: rotate(360deg); } }
+      @keyframes whiold-spin-ccw { to { transform: rotate(-360deg); } }
+
+      .whiold-logo-wrap {
+        position: relative;
+        width: var(--whiold-loader-logo-size);
+        height: var(--whiold-loader-logo-size);
+        animation: whiold-breathe 2s ease-in-out infinite;
+      }
+
+      @keyframes whiold-breathe {
+        0%, 100% { transform: scale(0.94); }
+        50% { transform: scale(1.04); }
+      }
+
+      .whiold-logo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(var(--whiold-loader-logo-glow));
+      }
+
+      .whiold-logo-shimmer {
+        position: absolute;
+        inset: 0;
+        -webkit-mask-image: url("/favicon.png");
+        mask-image: url("/favicon.png");
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background: linear-gradient(115deg, transparent 30%, rgba(255,236,220,0.95) 48%, rgba(255,255,255,1) 52%, transparent 70%);
+        background-size: 250% 250%;
+        background-position: -60% -60%;
+        animation: whiold-shimmer 2.4s ease-in-out infinite;
+        mix-blend-mode: screen;
+      }
+
+      @keyframes whiold-shimmer {
+        0% { background-position: -60% -60%; }
+        100% { background-position: 60% 60%; }
+      }
+
+      .whiold-loader-status {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--whiold-loader-subtext-color);
+        font-weight: 500;
+      }
+
+      .whiold-loader-status .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--whiold-loader-dot-color);
+        animation: whiold-dot-bounce 1.2s ease-in-out infinite;
+      }
+      .whiold-loader-status .dot:nth-child(2) { animation-delay: 0.15s; }
+      .whiold-loader-status .dot:nth-child(3) { animation-delay: 0.3s; }
+
+      @keyframes whiold-dot-bounce {
+        0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+        40% { opacity: 1; transform: translateY(-3px); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Boot loader: shown until React mounts into #root, then auto-fades and removes itself -->
+    <div id="whiold-boot-loader" class="whiold-loader-container">
+      <div class="whiold-loader-orb o1"></div>
+      <div class="whiold-loader-orb o2"></div>
+
+      <div class="whiold-loader-content">
+        <div class="whiold-spinner">
+          <div class="whiold-ring-outer"></div>
+          <div class="whiold-ring-inner"></div>
+          <div class="whiold-logo-wrap">
+            <img class="whiold-logo-img" src="/favicon.png" alt="Whiold" />
+            <div class="whiold-logo-shimmer"></div>
+          </div>
+        </div>
+
+        <div class="whiold-loader-status">
+          <span>Loading</span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      // Watches #root — once React mounts and renders its first child,
+      // fade the boot loader out and remove it from the DOM.
+      (function () {
+        var loader = document.getElementById("whiold-boot-loader");
+        var root = document.getElementById("root");
+        if (!loader || !root) return;
+
+        function hideLoader() {
+          loader.classList.add("whiold-loader-hidden");
+          setTimeout(function () {
+            loader.remove();
+          }, 450);
+        }
+
+        var observer = new MutationObserver(function () {
+          if (root.childElementCount > 0) {
+            observer.disconnect();
+            hideLoader();
+          }
+        });
+
+        observer.observe(root, { childList: true });
+
+        // safety fallback in case something goes wrong with the observer
+        setTimeout(hideLoader, 6000);
+      })();
+    </script>
+  </body>
+</html>

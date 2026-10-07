@@ -1,0 +1,475 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@import "tailwindcss";
+
+:root {
+  /* ---------- Brand ramp (terracotta / copper — sampled #BA704F) ---------- */
+  --whiold-50: #faf3f0;
+  --whiold-100: #f2e1d9;
+  --whiold-200: #e5c2b3;
+  --whiold-300: #d59e86;
+  --whiold-400: #c57a58;
+  --whiold-500: #ba704f; /* primary — matches the logo exactly */
+  --whiold-600: #9f5737;
+  --whiold-700: #79422a;
+  --whiold-800: #5b321f;
+  --whiold-900: #3d2115;
+
+  /* ---------- Semantic aliases ---------- */
+  --whiold-primary: var(--whiold-500);
+  --whiold-primary-hover: var(--whiold-600);
+  --whiold-primary-soft: var(--whiold-100); /* tinted backgrounds, badges */
+  --whiold-primary-ring: rgba(186, 112, 79, 0.16); /* focus ring / glow */
+
+  /* ---------- Text ---------- */
+  --whiold-text-heading: #2b2119; /* near-black warm brown, for h1/h2 */
+  --whiold-text-body: #6b5b4f; /* paragraphs, descriptions */
+  --whiold-text-muted: #a5978c; /* helper text, placeholders, captions */
+  --whiold-text-on-primary: #ffffff;
+
+  /* ---------- Surfaces & borders ---------- */
+  --whiold-bg: #ffffff;
+  --whiold-bg-soft: var(--whiold-50); /* page sections, subtle panels */
+  --whiold-bg-input: #faf8f6;
+  --whiold-border: #ece0d8; /* default hairline */
+  --whiold-border-hover: var(--whiold-300);
+  --whiold-border-focus: var(--whiold-500);
+
+  /* ---------- Radius scale ---------- */
+  --whiold-radius-sm: 10px;
+  --whiold-radius-md: 14px;
+  --whiold-radius-lg: 24px;
+
+  /* ---------- Shadows & focus glow ---------- */
+  --whiold-shadow-card: 0 16px 40px -12px rgba(59, 33, 21, 0.14);
+  --whiold-shadow-btn: 0 10px 24px -8px rgba(186, 112, 79, 0.45);
+  --whiold-shadow-focus: 0 0 0 4px var(--whiold-primary-ring);
+
+  /* ---------- CTA gradient (single-hue depth, not multi-color) ---------- */
+  --whiold-gradient-brand: linear-gradient(
+    90deg,
+    var(--whiold-400) 0%,
+    var(--whiold-500) 50%,
+    var(--whiold-600) 100%
+  );
+  --whiold-gradient-brand-hover: linear-gradient(
+    90deg,
+    var(--whiold-500) 0%,
+    var(--whiold-600) 50%,
+    var(--whiold-700) 100%
+  );
+  --whiold-gradient-panel: linear-gradient(
+    135deg,
+    var(--whiold-50) 0%,
+    #ffffff 60%,
+    var(--whiold-100) 100%
+  );
+
+  /* ---------- Button ---------- */
+  --whiold-button-height-sm: 36px;
+  --whiold-button-height-md: 44px;
+  --whiold-button-height-lg: 52px;
+  --whiold-button-radius: var(--whiold-radius-md);
+  --whiold-button-padding-x: 24px;
+  --whiold-button-font-weight: 600;
+  --whiold-button-font-size: 15px;
+  --whiold-button-bg: var(--whiold-gradient-brand);
+  --whiold-button-bg-hover: var(--whiold-gradient-brand-hover);
+  --whiold-button-text: var(--whiold-text-on-primary);
+  --whiold-button-shadow: var(--whiold-shadow-btn);
+  --whiold-button-disabled-bg: var(--whiold-200);
+  --whiold-button-disabled-text: var(--whiold-text-muted);
+
+  /* ---------- Input ---------- */
+  --whiold-input-height: 48px;
+  --whiold-input-radius: var(--whiold-radius-sm);
+  --whiold-input-bg: var(--whiold-bg-input);
+  --whiold-input-border: var(--whiold-border);
+  --whiold-input-border-hover: var(--whiold-border-hover);
+  --whiold-input-border-focus: var(--whiold-border-focus);
+  --whiold-input-focus-ring: var(--whiold-shadow-focus);
+  --whiold-input-label-color: var(--whiold-text-muted);
+  --whiold-input-text-color: var(--whiold-text-heading);
+  --whiold-input-placeholder-color: var(--whiold-text-muted);
+  --whiold-input-error-color: #c0392b;
+  --whiold-input-helper-color: var(--whiold-text-muted);
+
+  /* ---------- Input ---------- */
+  --whiold-input-height: 48px;
+  --whiold-input-radius: var(
+    --whiold-radius-md
+  ); /* was radius-sm — aligned to actual usage (14px) */
+  --whiold-input-bg: var(--whiold-bg-input);
+  --whiold-input-bg-focus: var(--whiold-bg); /* white on focus */
+  --whiold-input-bg-disabled: #f8fafc;
+  --whiold-input-border: var(--whiold-border);
+  --whiold-input-border-hover: var(--whiold-border-hover);
+  --whiold-input-border-focus: var(--whiold-border-focus);
+  --whiold-input-focus-ring: var(--whiold-shadow-focus);
+  --whiold-input-label-color: var(--whiold-text-muted);
+  --whiold-input-text-color: var(--whiold-text-heading);
+  --whiold-input-placeholder-color: var(--whiold-text-muted);
+  --whiold-input-helper-color: var(--whiold-text-muted);
+
+  /* status colors — kept independent from brand ramp, but still tokenized */
+  --whiold-input-error-border: #fb7185; /* rose-400 */
+  --whiold-input-error-text: #f43f5e; /* rose-500 */
+
+  /* ---------- Sidebar ---------- */
+  --whiold-sidebar-width: 320px;
+  --whiold-sidebar-width-collapsed: 90px;
+
+  /* ---------------table-------------- */
+  --table-border: var(--whiold-border);
+  --table-header-bg: var(--whiold-50);
+  --table-row-hover: var(--whiold-50);
+  --text-primary: var(--whiold-text-heading);
+  --input-height: var(--whiold-input-height);
+  --radius-md: var(--whiold-radius-md);
+  --white: var(--whiold-bg);
+}
+
+.whiold-collections-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -10; /* sits behind ALL page content, including navbar if navbar is transparent */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.whiold-collections-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  /* darker + flatter now — photo is just texture, not the color */
+  filter: saturate(0.55) brightness(0.35);
+  transform: scale(1.05);
+  animation: whiold-bg-breathe 22s ease-in-out infinite;
+}
+
+@keyframes whiold-bg-breathe {
+  0%,
+  100% {
+    transform: scale(1.05) translateY(0);
+  }
+  50% {
+    transform: scale(1.1) translateY(-1%);
+  }
+}
+
+/* Warm scrim: fades bg into --whiold-900 at top/bottom so navbar + footer content stay legible */
+.whiold-collections-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    var(--whiold-900) 0%,
+    var(--whiold-800) 45%,
+    var(--whiold-700) 78%,
+    var(--whiold-900) 100%
+  );
+  opacity: 0.94;
+}
+
+/* Fine grain texture for a premium, non-flat print feel */
+.whiold-collections-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Horizontal gallery track ---------- */
+.whiold-collections-track {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+  /* hide scrollbar cross-browser, drag-to-scroll still works via native overflow */
+  scrollbar-width: none;
+}
+.whiold-collections-track::-webkit-scrollbar {
+  display: none;
+}
+
+.whiold-collections-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* ---------- Foil shimmer sweep on card border (hover) ---------- */
+.whiold-foil-border {
+  position: relative;
+  border-radius: var(--whiold-radius-lg);
+  border: 1px solid rgba(242, 225, 217, 0.18);
+}
+.whiold-foil-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    var(--whiold-300) 40%,
+    var(--whiold-100) 50%,
+    var(--whiold-300) 60%,
+    transparent 80%
+  );
+  background-size: 250% 250%;
+  background-position: 0% 0%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.whiold-collections-card:hover .whiold-foil-border::before {
+  opacity: 1;
+  animation: whiold-foil-sweep 1.8s ease forwards;
+}
+@keyframes whiold-foil-sweep {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* ---------- Curtain reveal mask (the image itself "unveils" from center) ---------- */
+.whiold-curtain-l,
+.whiold-curtain-r {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--whiold-900);
+  z-index: 5;
+  pointer-events: none;
+}
+.whiold-curtain-l {
+  left: 0;
+  transform-origin: left center;
+}
+.whiold-curtain-r {
+  right: 0;
+  transform-origin: right center;
+}
+
+/* ---------- Mega menu panel ---------- */
+.whiold-megamenu-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(880px, 92vw);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid var(--whiold-border);
+  border-radius: var(--whiold-radius-lg);
+  box-shadow: var(--whiold-shadow-card);
+  overflow: hidden;
+  z-index: 50;
+}
+
+/* little upward-pointing caret so the panel visually "belongs" to the trigger */
+.whiold-megamenu-panel::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  border-left: 1px solid var(--whiold-border);
+  border-top: 1px solid var(--whiold-border);
+}
+
+.whiold-megamenu-col + .whiold-megamenu-col {
+  border-left: 1px solid var(--whiold-border);
+}
+
+.whiold-megamenu-sublink {
+  color: var(--whiold-text-body);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.whiold-megamenu-sublink:hover {
+  color: var(--whiold-primary);
+  transform: translateX(3px);
+}
+
+/* ---------- Hero category rail ---------- */
+.whiold-rail-track {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 4px 16px;
+}
+.whiold-rail-track::-webkit-scrollbar {
+  display: none;
+}
+
+.whiold-rail-tile {
+  flex: 0 0 auto;
+  width: 108px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.whiold-rail-avatar {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 3px;
+  background: var(--whiold-gradient-brand);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.whiold-rail-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--whiold-bg);
+}
+
+.whiold-rail-tile:hover .whiold-rail-avatar {
+  /* transform: translateY(-6px) scale(1.05); */
+  box-shadow: var(--whiold-shadow-btn);
+}
+
+/* ---------- Pleat strip 3D setup ---------- */
+.whiold-pleat-strip {
+  perspective: 1400px;
+}
+
+.whiold-pleat-flipper {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.whiold-pleat-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.whiold-pleat-face--back {
+  transform: rotateY(180deg);
+}
+
+/* ---------- Instagram-story style progress segments ---------- */
+.whiold-progress-track {
+  display: flex;
+  gap: 6px;
+  padding: 14px 16px 0;
+}
+
+.whiold-progress-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.whiold-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--whiold-bg); /* solid white fill reads clearly on photo */
+}
+
+.whiold-progress-fill.is-active {
+  animation: whiold-progress-grow linear forwards;
+}
+
+.whiold-progress-fill.is-done {
+  width: 100%;
+}
+
+@keyframes whiold-progress-grow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Custom Scrollbars (Desktop only) ---------- */
+@media (min-width: 1024px) {
+  /* Scrollbar configuration for Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--whiold-border) var(--whiold-bg-soft);
+  }
+
+  /* Webkit custom scrollbars (Chrome, Safari, Edge, Brave, Opera) */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--whiold-bg-soft);
+    border-radius: 9999px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--whiold-border);
+    border-radius: 9999px;
+    border: 2px solid var(--whiold-bg-soft);
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--whiold-primary);
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background: var(--whiold-primary-hover, var(--whiold-600));
+  }
+}
+
+/* Custom Global Clickable / Button Cursors */
+button,
+[role="button"],
+.MuiButton-root,
+.MuiIconButton-root,
+.MuiButtonBase-root {
+  cursor: pointer !important;
+}
+
+button:disabled,
+[role="button"]:disabled,
+.MuiButton-root:disabled,
+.MuiIconButton-root:disabled,
+.MuiButtonBase-root:disabled,
+.Mui-disabled,
+.MuiButtonBase-root.Mui-disabled {
+  cursor: not-allowed !important;
+}
