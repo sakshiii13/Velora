@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useLayoutEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { Sparkles, ArrowRight, ChevronRight } from "lucide-react";
@@ -55,13 +55,13 @@ const CATEGORY_INFO = {
    promo banners, and (mock) product catalogue.
    Wire `products` up to your real API/store per category.
    ══════════════════════════════════════════════════════════════════ */
-const CATEGORY_DATA = {
+export const CATEGORY_DATA = {
   men: {
     heroImage:
       "https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1800&auto=format&fit=crop",
     subcategories: [
       { name: "Kurtas", image: "/kurta.jpg" },
-      { name: "Sherwanis", image: "/shervani1.jpg" },
+      { name: "Sherwanis", image: "/shervani/shervani1.jpg" },
       { name: "Nehru Jackets", image: "/nehru.jpg" },
       { name: "Bandhgalas", image: "/bandhgalas.jpg" },
       { name: "Casual Fits", image: "/casual.jpg" },
@@ -511,25 +511,44 @@ const CATEGORY_DATA = {
   },
 
   kids: {
-    heroImage: "/kids-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?q=80&w=1800&auto=format&fit=crop",
     subcategories: [
-      { name: "Boys Ethnic", image: "/kids-cats/boys-ethnic.jpg" },
-      { name: "Girls Ethnic", image: "/kids-cats/girls-ethnic.jpg" },
-      { name: "Festive Sets", image: "/kids-cats/festive-sets.jpg" },
-      { name: "Everyday Wear", image: "/kids-cats/everyday-wear.jpg" },
+      {
+        name: "Boys Ethnic",
+        image:
+          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Girls Ethnic",
+        image:
+          "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Festive Sets",
+        image:
+          "https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Everyday Wear",
+        image:
+          "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?q=80&w=800&auto=format&fit=crop",
+      },
     ],
     promoBanners: [
       {
         title: "Festive Edit",
         subtitle: "Sets made for celebrations, sized for little ones",
         sub: "Festive Sets",
-        image: "/kids-cats/festive-sets.jpg",
+        image:
+          "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?q=80&w=1200&auto=format&fit=crop",
       },
       {
         title: "Everyday Play",
         subtitle: "Comfortable everyday wear built for movement",
         sub: "Everyday Wear",
-        image: "/kids-cats/everyday-wear.jpg",
+        image:
+          "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?q=80&w=1200&auto=format&fit=crop",
       },
     ],
     trendingLabel: "Trending in Kids",
@@ -552,8 +571,15 @@ const CATEGORY_DATA = {
         ],
         description:
           "A festive silk kurta-pajama set for little ones — comfortable enough for a full day of celebrations.",
-        details: ["Silk blend", "Elasticated pajama waist", "Machine washable", "Made in India"],
-        images: ["/kids-cats/boys-ethnic.jpg"],
+        details: [
+          "Silk blend",
+          "Elasticated pajama waist",
+          "Machine washable",
+          "Made in India",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 302,
@@ -566,9 +592,17 @@ const CATEGORY_DATA = {
         reviewCount: 27,
         sizes: ["3-4Y", "5-6Y", "7-8Y"],
         colors: [{ name: "Charcoal", hex: "#3D2115" }],
-        description: "A miniature Nehru jacket set that dresses up any festive kurta in seconds.",
-        details: ["Textured cotton blend", "Mandarin collar", "Two-piece set", "Dry clean recommended"],
-        images: ["/kids-cats/boys-ethnic.jpg"],
+        description:
+          "A miniature Nehru jacket set that dresses up any festive kurta in seconds.",
+        details: [
+          "Textured cotton blend",
+          "Mandarin collar",
+          "Two-piece set",
+          "Dry clean recommended",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 303,
@@ -588,8 +622,15 @@ const CATEGORY_DATA = {
         ],
         description:
           "A flowing anarkali frock with delicate embroidery — festive twirl-friendly styling for little girls.",
-        details: ["Georgette outer, cotton lining", "Thread embroidery", "Back zip closure", "Dry clean only"],
-        images: ["/kids-cats/girls-ethnic.jpg"],
+        details: [
+          "Georgette outer, cotton lining",
+          "Thread embroidery",
+          "Back zip closure",
+          "Dry clean only",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 304,
@@ -602,9 +643,17 @@ const CATEGORY_DATA = {
         reviewCount: 33,
         sizes: ["3-4Y", "5-6Y", "7-8Y"],
         colors: [{ name: "Gold", hex: "#C9A24B" }],
-        description: "A mini lehenga choli set with lightweight flare — built for dancing through every function.",
-        details: ["Net skirt with satin lining", "Sequin work", "Includes dupatta", "Dry clean only"],
-        images: ["/kids-cats/girls-ethnic.jpg"],
+        description:
+          "A mini lehenga choli set with lightweight flare — built for dancing through every function.",
+        details: [
+          "Net skirt with satin lining",
+          "Sequin work",
+          "Includes dupatta",
+          "Dry clean only",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 305,
@@ -619,9 +668,17 @@ const CATEGORY_DATA = {
         badge: "Trending",
         sizes: ["S", "M", "L"],
         colors: [{ name: "Ivory", hex: "#F2E1D9" }],
-        description: "A coordinated festive set designed for siblings to match on the big day.",
-        details: ["Cotton silk blend", "Coordinated prints", "Machine washable", "Made in India"],
-        images: ["/kids-cats/festive-sets.jpg"],
+        description:
+          "A coordinated festive set designed for siblings to match on the big day.",
+        details: [
+          "Cotton silk blend",
+          "Coordinated prints",
+          "Machine washable",
+          "Made in India",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 306,
@@ -634,9 +691,17 @@ const CATEGORY_DATA = {
         reviewCount: 19,
         sizes: ["2-3Y", "4-5Y", "6-7Y"],
         colors: [{ name: "Maroon", hex: "#6E1F2B" }],
-        description: "A festive co-ord set with subtle shimmer detailing — built for Diwali evenings and family photos.",
-        details: ["Cotton blend", "Shimmer thread accents", "Two-piece set", "Machine washable"],
-        images: ["/kids-cats/festive-sets.jpg"],
+        description:
+          "A festive co-ord set with subtle shimmer detailing — built for Diwali evenings and family photos.",
+        details: [
+          "Cotton blend",
+          "Shimmer thread accents",
+          "Two-piece set",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 307,
@@ -653,9 +718,17 @@ const CATEGORY_DATA = {
           { name: "Sage", hex: "#8A9A7E" },
           { name: "Charcoal", hex: "#3D2115" },
         ],
-        description: "A simple cotton kurta set built for school functions and everyday festive moments alike.",
-        details: ["100% cotton", "Relaxed fit", "Machine washable", "Made in India"],
-        images: ["/kids-cats/everyday-wear.jpg"],
+        description:
+          "A simple cotton kurta set built for school functions and everyday festive moments alike.",
+        details: [
+          "100% cotton",
+          "Relaxed fit",
+          "Machine washable",
+          "Made in India",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 308,
@@ -668,33 +741,60 @@ const CATEGORY_DATA = {
         reviewCount: 15,
         sizes: ["3-4Y", "5-6Y", "7-8Y"],
         colors: [{ name: "Ivory", hex: "#F2E1D9" }],
-        description: "A soft, breathable playwear set made to keep up with an active day.",
-        details: ["Cotton jersey", "Elasticated waist", "Machine washable", "Made in India"],
-        images: ["/kids-cats/everyday-wear.jpg"],
+        description:
+          "A soft, breathable playwear set made to keep up with an active day.",
+        details: [
+          "Cotton jersey",
+          "Elasticated waist",
+          "Machine washable",
+          "Made in India",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1471286174890-9c112ffca564?q=80&w=900&auto=format&fit=crop",
+        ],
       },
     ],
   },
 
   sports: {
-    heroImage: "/sports-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1800&auto=format&fit=crop",
     subcategories: [
-      { name: "Activewear", image: "/sports-cats/activewear.jpg" },
-      { name: "Footwear", image: "/sports-cats/footwear.jpg" },
-      { name: "Trackpants", image: "/sports-cats/trackpants.jpg" },
-      { name: "Accessories", image: "/sports-cats/accessories.jpg" },
+      {
+        name: "Activewear",
+        image:
+          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Footwear",
+        image:
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Trackpants",
+        image:
+          "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Accessories",
+        image:
+          "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?q=80&w=800&auto=format&fit=crop",
+      },
     ],
     promoBanners: [
       {
         title: "Performance Edit",
         subtitle: "Activewear built to move with you",
         sub: "Activewear",
-        image: "/sports-cats/activewear.jpg",
+        image:
+          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop",
       },
       {
         title: "Everyday Training",
         subtitle: "Trackpants & footwear for daily workouts",
         sub: "Trackpants",
-        image: "/sports-cats/trackpants.jpg",
+        image:
+          "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=1200&auto=format&fit=crop",
       },
     ],
     trendingLabel: "Trending in Sports",
@@ -715,9 +815,17 @@ const CATEGORY_DATA = {
           { name: "Charcoal", hex: "#3D2115" },
           { name: "Sage", hex: "#8A9A7E" },
         ],
-        description: "A moisture-wicking training tee built to stay light through the toughest sets.",
-        details: ["Polyester-spandex blend", "Quick-dry fabric", "Regular fit", "Machine washable"],
-        images: ["/sports-cats/activewear.jpg"],
+        description:
+          "A moisture-wicking training tee built to stay light through the toughest sets.",
+        details: [
+          "Polyester-spandex blend",
+          "Quick-dry fabric",
+          "Regular fit",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 402,
@@ -730,9 +838,17 @@ const CATEGORY_DATA = {
         reviewCount: 44,
         sizes: ["S", "M", "L", "XL"],
         colors: [{ name: "Charcoal", hex: "#3D2115" }],
-        description: "Seamless-knit leggings with four-way stretch — built to move through every rep.",
-        details: ["Four-way stretch fabric", "High-rise waistband", "Squat-proof", "Machine washable"],
-        images: ["/sports-cats/activewear.jpg"],
+        description:
+          "Seamless-knit leggings with four-way stretch — built to move through every rep.",
+        details: [
+          "Four-way stretch fabric",
+          "High-rise waistband",
+          "Squat-proof",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 403,
@@ -747,9 +863,17 @@ const CATEGORY_DATA = {
         badge: "Trending",
         sizes: ["6", "7", "8", "9", "10"],
         colors: [{ name: "Ivory", hex: "#F2E1D9" }],
-        description: "Lightweight running shoes with responsive cushioning for daily miles.",
-        details: ["Breathable mesh upper", "EVA midsole", "Rubber outsole", "Lace-up closure"],
-        images: ["/sports-cats/footwear.jpg"],
+        description:
+          "Lightweight running shoes with responsive cushioning for daily miles.",
+        details: [
+          "Breathable mesh upper",
+          "EVA midsole",
+          "Rubber outsole",
+          "Lace-up closure",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 404,
@@ -762,9 +886,17 @@ const CATEGORY_DATA = {
         reviewCount: 37,
         sizes: ["6", "7", "8", "9", "10"],
         colors: [{ name: "Sage", hex: "#8A9A7E" }],
-        description: "Versatile training sneakers built for gym floors and everyday errands alike.",
-        details: ["Synthetic upper", "Cushioned insole", "Non-slip sole", "Lace-up closure"],
-        images: ["/sports-cats/footwear.jpg"],
+        description:
+          "Versatile training sneakers built for gym floors and everyday errands alike.",
+        details: [
+          "Synthetic upper",
+          "Cushioned insole",
+          "Non-slip sole",
+          "Lace-up closure",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 405,
@@ -781,9 +913,17 @@ const CATEGORY_DATA = {
           { name: "Charcoal", hex: "#3D2115" },
           { name: "Ivory", hex: "#F2E1D9" },
         ],
-        description: "Tapered trackpants with a relaxed fit through the thigh and a snug ankle cuff.",
-        details: ["Cotton-poly blend", "Zippered pockets", "Elasticated drawstring waist", "Machine washable"],
-        images: ["/sports-cats/trackpants.jpg"],
+        description:
+          "Tapered trackpants with a relaxed fit through the thigh and a snug ankle cuff.",
+        details: [
+          "Cotton-poly blend",
+          "Zippered pockets",
+          "Elasticated drawstring waist",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 406,
@@ -796,9 +936,17 @@ const CATEGORY_DATA = {
         reviewCount: 28,
         sizes: ["S", "M", "L"],
         colors: [{ name: "Sage", hex: "#8A9A7E" }],
-        description: "Fleece-lined joggers built for warmth on cooler training days.",
-        details: ["Fleece-lined interior", "Ribbed cuffs", "Side pockets", "Machine washable"],
-        images: ["/sports-cats/trackpants.jpg"],
+        description:
+          "Fleece-lined joggers built for warmth on cooler training days.",
+        details: [
+          "Fleece-lined interior",
+          "Ribbed cuffs",
+          "Side pockets",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 407,
@@ -812,9 +960,17 @@ const CATEGORY_DATA = {
         reviewCount: 21,
         sizes: ["Free Size"],
         colors: [{ name: "Gold", hex: "#C9A24B" }],
-        description: "A set of quick-dry microfiber towels sized for gym bags and travel.",
-        details: ["Microfiber fabric", "Set of 2", "Compact fold", "Machine washable"],
-        images: ["/sports-cats/accessories.jpg"],
+        description:
+          "A set of quick-dry microfiber towels sized for gym bags and travel.",
+        details: [
+          "Microfiber fabric",
+          "Set of 2",
+          "Compact fold",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 408,
@@ -827,33 +983,60 @@ const CATEGORY_DATA = {
         reviewCount: 17,
         sizes: ["Free Size"],
         colors: [{ name: "Charcoal", hex: "#3D2115" }],
-        description: "A breathable sports cap with an adjustable strap for a snug, all-day fit.",
-        details: ["Breathable mesh panels", "Adjustable strap", "Curved brim", "Machine washable"],
-        images: ["/sports-cats/accessories.jpg"],
+        description:
+          "A breathable sports cap with an adjustable strap for a snug, all-day fit.",
+        details: [
+          "Breathable mesh panels",
+          "Adjustable strap",
+          "Curved brim",
+          "Machine washable",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=900&auto=format&fit=crop",
+        ],
       },
     ],
   },
 
   accessories: {
-    heroImage: "/accessories-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1800&auto=format&fit=crop",
     subcategories: [
-      { name: "Jewellery", image: "/accessories-cats/jewellery.jpg" },
-      { name: "Bags", image: "/accessories-cats/bags.jpg" },
-      { name: "Footwear", image: "/accessories-cats/footwear.jpg" },
-      { name: "Dupattas", image: "/accessories-cats/dupattas.jpg" },
+      {
+        name: "Jewellery",
+        image:
+          "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Bags",
+        image:
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Footwear",
+        image:
+          "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
+      },
+      {
+        name: "Dupattas",
+        image:
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800&auto=format&fit=crop",
+      },
     ],
     promoBanners: [
       {
         title: "The Finishing Touch",
         subtitle: "Jewellery & dupattas that complete the look",
         sub: "Jewellery",
-        image: "/accessories-cats/jewellery.jpg",
+        image:
+          "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1200&auto=format&fit=crop",
       },
       {
         title: "Everyday Carry",
         subtitle: "Bags & footwear for daily essentials",
         sub: "Bags",
-        image: "/accessories-cats/bags.jpg",
+        image:
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1200&auto=format&fit=crop",
       },
     ],
     trendingLabel: "Trending in Accessories",
@@ -871,9 +1054,17 @@ const CATEGORY_DATA = {
         badge: "Bestseller",
         sizes: ["Free Size"],
         colors: [{ name: "Gold", hex: "#C9A24B" }],
-        description: "A statement kundan choker set that pairs beautifully with sarees and lehengas alike.",
-        details: ["Kundan and pearl detailing", "Adjustable dori closure", "Includes matching earrings", "Store in a dry pouch"],
-        images: ["/accessories-cats/jewellery.jpg"],
+        description:
+          "A statement kundan choker set that pairs beautifully with sarees and lehengas alike.",
+        details: [
+          "Kundan and pearl detailing",
+          "Adjustable dori closure",
+          "Includes matching earrings",
+          "Store in a dry pouch",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 502,
@@ -886,9 +1077,17 @@ const CATEGORY_DATA = {
         reviewCount: 41,
         sizes: ["Free Size"],
         colors: [{ name: "Charcoal", hex: "#3D2115" }],
-        description: "Classic oxidised jhumkas that dress up both ethnic and Indo-western outfits.",
-        details: ["Oxidised silver finish", "Lightweight build", "Push-back closure", "Store away from moisture"],
-        images: ["/accessories-cats/jewellery.jpg"],
+        description:
+          "Classic oxidised jhumkas that dress up both ethnic and Indo-western outfits.",
+        details: [
+          "Oxidised silver finish",
+          "Lightweight build",
+          "Push-back closure",
+          "Store away from moisture",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 503,
@@ -906,9 +1105,17 @@ const CATEGORY_DATA = {
           { name: "Maroon", hex: "#6E1F2B" },
           { name: "Gold", hex: "#C9A24B" },
         ],
-        description: "A hand-embroidered potli bag sized to carry the essentials through a wedding evening.",
-        details: ["Silk blend outer", "Drawstring closure", "Hand embroidery", "Dry clean only"],
-        images: ["/accessories-cats/bags.jpg"],
+        description:
+          "A hand-embroidered potli bag sized to carry the essentials through a wedding evening.",
+        details: [
+          "Silk blend outer",
+          "Drawstring closure",
+          "Hand embroidery",
+          "Dry clean only",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 504,
@@ -921,9 +1128,17 @@ const CATEGORY_DATA = {
         reviewCount: 26,
         sizes: ["Free Size"],
         colors: [{ name: "Ivory", hex: "#F2E1D9" }],
-        description: "A structured tote built for everyday carry, from office days to weekend errands.",
-        details: ["Vegan leather", "Interior zip pocket", "Reinforced handles", "Wipe clean"],
-        images: ["/accessories-cats/bags.jpg"],
+        description:
+          "A structured tote built for everyday carry, from office days to weekend errands.",
+        details: [
+          "Vegan leather",
+          "Interior zip pocket",
+          "Reinforced handles",
+          "Wipe clean",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 505,
@@ -938,9 +1153,17 @@ const CATEGORY_DATA = {
         badge: "Trending",
         sizes: ["36", "37", "38", "39", "40"],
         colors: [{ name: "Gold", hex: "#C9A24B" }],
-        description: "Hand-embellished juttis that bring festive detailing to every step.",
-        details: ["Genuine leather sole", "Hand embroidery", "Cushioned footbed", "Store in a dust bag"],
-        images: ["/accessories-cats/footwear.jpg"],
+        description:
+          "Hand-embellished juttis that bring festive detailing to every step.",
+        details: [
+          "Genuine leather sole",
+          "Hand embroidery",
+          "Cushioned footbed",
+          "Store in a dust bag",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 506,
@@ -953,9 +1176,17 @@ const CATEGORY_DATA = {
         reviewCount: 29,
         sizes: ["36", "37", "38", "39", "40"],
         colors: [{ name: "Charcoal", hex: "#3D2115" }],
-        description: "Comfortable block heel sandals that carry through long festive evenings.",
-        details: ["Synthetic leather straps", "Cushioned block heel", "Buckle closure", "Wipe clean"],
-        images: ["/accessories-cats/footwear.jpg"],
+        description:
+          "Comfortable block heel sandals that carry through long festive evenings.",
+        details: [
+          "Synthetic leather straps",
+          "Cushioned block heel",
+          "Buckle closure",
+          "Wipe clean",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 507,
@@ -969,9 +1200,17 @@ const CATEGORY_DATA = {
         reviewCount: 38,
         sizes: ["Free Size"],
         colors: [{ name: "Maroon", hex: "#6E1F2B" }],
-        description: "A pure silk dupatta with a hand-finished zari border — the finishing touch for festive suits.",
-        details: ["Pure silk", "Hand-finished zari border", "2.5m length", "Dry clean only"],
-        images: ["/accessories-cats/dupattas.jpg"],
+        description:
+          "A pure silk dupatta with a hand-finished zari border — the finishing touch for festive suits.",
+        details: [
+          "Pure silk",
+          "Hand-finished zari border",
+          "2.5m length",
+          "Dry clean only",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=900&auto=format&fit=crop",
+        ],
       },
       {
         id: 508,
@@ -984,16 +1223,59 @@ const CATEGORY_DATA = {
         reviewCount: 19,
         sizes: ["Free Size"],
         colors: [{ name: "Sage", hex: "#8A9A7E" }],
-        description: "A lightweight organza dupatta with a delicate print, easy to drape and layer.",
-        details: ["100% organza", "Printed pattern", "2.25m length", "Hand wash recommended"],
-        images: ["/accessories-cats/dupattas.jpg"],
+        description:
+          "A lightweight organza dupatta with a delicate print, easy to drape and layer.",
+        details: [
+          "100% organza",
+          "Printed pattern",
+          "2.25m length",
+          "Hand wash recommended",
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?q=80&w=900&auto=format&fit=crop",
+        ],
       },
     ],
   },
 };
 
+export const findCategoryProductById = (id) => {
+  if (!id) return null;
+  const idStr = String(id);
+  for (const cat of Object.values(CATEGORY_DATA)) {
+    const found = cat.products?.find(
+      (p) => String(p.id) === idStr || String(p._id) === idStr
+    );
+    if (found) {
+      const imgs = found.images?.length
+        ? found.images
+        : found.image
+        ? [found.image]
+        : [];
+      return {
+        ...found,
+        _id: String(found.id || found._id),
+        id: found.id || found._id,
+        brand: found.brand || "Whiold Atelier",
+        mrp: found.originalPrice || found.mrp || found.price,
+        originalPrice: found.originalPrice || found.mrp,
+        price: found.price,
+        sizes: found.sizes || ["S", "M", "L", "XL"],
+        details: found.details || ["Made in India", "Premium Quality"],
+        colors: found.colors || [],
+        images: imgs,
+        image: imgs[0] || "",
+      };
+    }
+  }
+  return null;
+};
+
 const CategoryPage = () => {
   const { category } = useParams();
+  const [searchParams] = useSearchParams();
+  const subParam = searchParams.get("sub");
+
   const activeCategory = CATEGORY_DATA[category] ? category : "men";
 
   const pageData = CATEGORY_INFO[activeCategory] || CATEGORY_INFO.men;
@@ -1008,10 +1290,21 @@ const CategoryPage = () => {
   const gridRef = useRef(null);
   const gridSectionRef = useRef(null);
 
-  // Reset the active pill whenever the category itself changes
+  // Sync active pill with URL sub param or reset on category change
   useLayoutEffect(() => {
-    setActiveSub("All");
-  }, [activeCategory]);
+    if (subParam) {
+      setActiveSub(subParam);
+      setTimeout(() => {
+        gridSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 150);
+    } else {
+      setActiveSub("All");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [activeCategory, subParam]);
 
   // ── Fraunces font — skip if already injected elsewhere (e.g. HeroSection) ──
   useLayoutEffect(() => {

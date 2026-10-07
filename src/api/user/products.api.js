@@ -59,6 +59,7 @@ export const getProductsByCategoryAndSub = async (cat, subCat) => {
 
 import { delay, ok, fail } from "../../mock/mockDelay";
 import { mockDb } from "../../mock/mockDb";
+import { findCategoryProductById } from "../../component/pages/landing/navbar/categories/CategoryPage";
 
 export const getAllProducts = async () => {
   await delay(400);
@@ -67,8 +68,11 @@ export const getAllProducts = async () => {
 };
 
 export const getProductDetailsById = async (id) => {
-  await delay(300);
-  const product = mockDb.getProducts().find(p => p._id === id);
+  await delay(200);
+  let product = mockDb.getProducts().find(p => p._id === id || String(p.id) === String(id));
+  if (!product) {
+    product = findCategoryProductById(id);
+  }
   if (product) return ok(product);
   return fail("Product not found");
 };

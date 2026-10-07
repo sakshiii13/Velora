@@ -21,8 +21,9 @@ import mainContent from "../../../../constants/mainContent";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useCart } from "../../../../context/CartContext";
-import { useWishlist } from "../../../../context/WishlistContext"; 
+import { useWishlist } from "../../../../context/WishlistContext";
 import CategoryMegaMenu from "./Categorymenu";
+import { CATEGORIES } from "./CategoryData";
 import { Router } from "../../../../constants/router";
 import { getAllProducts } from "../../../../api/user/products.api";
 import { useEffect } from "react";
@@ -149,7 +150,7 @@ const Navbar = () => {
       >
         <Toolbar
           disableGutters
-          className="mx-auto w-full max-w-7xl px-4 lg:px-10"
+          className="relative mx-auto w-full max-w-7xl px-4 lg:px-10"
           sx={{ minHeight: "85px !important", py: 0.5 }}
         >
           {/* Logo — hides on mobile while the mobile search takeover is open */}
@@ -166,10 +167,9 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Desktop nav links — CategoryMegaMenu sits first, then the rest of NAV_LINKS.
-              `relative` here is what the mega-menu panel anchors its position off of. */}
-          <nav className="hidden lg:flex items-center gap-1 flex-1 relative">
-            <CategoryMegaMenu categories={dynamicCategories} />
+          {/* Desktop nav links */}
+          <nav className="hidden lg:flex items-center gap-1 flex-1">
+            <CategoryMegaMenu categories={CATEGORIES} />
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
@@ -461,66 +461,71 @@ const Navbar = () => {
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden pl-3"
               >
-                {dynamicCategories.map((cat) => (
-                  <div key={cat.id} className="flex flex-col">
-                    <div className="flex items-center justify-between py-2 transition-colors duration-200">
-                      <Link
-                        to={`/shopping`}
-                        state={{ categoryName: { _id: cat.id, name: cat.name } }}
-                        onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-3 text-[14px] flex-1 hover:text-(--whiold-primary)"
-                        style={{ color: "var(--whiold-text-body)" }}
-                      >
-                        <img
-                          src={cat.image}
-                          alt=""
-                          className="w-8 h-8 rounded-full object-cover shrink-0"
-                        />
-                        {cat.name}
-                      </Link>
-                      {cat.subcategories && cat.subcategories.length > 0 && (
-                        <button
-                          onClick={(e) => toggleSubCat(cat.id, e)}
-                          className="p-2 text-gray-500 hover:text-(--whiold-primary)"
-                        >
-                          <ChevronDown
-                            size={16}
-                            className={`transition-transform duration-200 ${
-                              openSubCat[cat.id] ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                      )}
-                    </div>
+                {CATEGORIES.map((cat) => {
+                  const catSlug = cat.slug || cat.id;
+                  const isSubOpen = openSubCat[cat.id];
+                  const subList = Array.isArray(cat.subcategories) ? cat.subcategories : [];
 
-                    <AnimatePresence initial={false}>
-                      {openSubCat[cat.id] && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden pl-11 flex flex-col gap-1 pb-2"
+                  return (
+                    <div key={cat.id} className="flex flex-col border-b border-[var(--whiold-border)]/40 last:border-b-0 py-1">
+                      <div className="flex items-center justify-between py-1.5 transition-colors duration-200">
+                        <Link
+                          to={`/category/${catSlug}`}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-3 text-[14px] font-medium flex-1 hover:text-[var(--whiold-primary)]"
+                          style={{ color: "var(--whiold-text-heading)" }}
                         >
-                          {cat.subcategories.map((sub) => (
-                            <Link
-                              key={sub.id}
-                              to={`/shopping`}
-                              state={{
-                                categoryName: { _id: cat.id, name: cat.name },
-                                subCategoryName: { _id: sub.id, name: sub.name },
-                              }}
-                              onClick={() => setMobileOpen(false)}
-                              className="text-[13.5px] py-1.5 transition-colors hover:text-(--whiold-primary)"
-                              style={{ color: "var(--whiold-text-muted)" }}
-                            >
-                              {sub.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
+                          <img
+                            src={cat.image}
+                            alt={cat.name}
+                            className="w-9 h-9 rounded-full object-cover shrink-0 border border-[var(--whiold-border)]"
+                          />
+                          <span>{cat.name}</span>
+                        </Link>
+                        {subList.length > 0 && (
+                          <button
+                            onClick={(e) => toggleSubCat(cat.id, e)}
+                            className="p-2 text-gray-500 hover:text-[var(--whiold-primary)]"
+                          >
+                            <ChevronDown
+                              size={16}
+                              className={`transition-transform duration-200 ${
+                                isSubOpen ? "rotate-180 text-[var(--whiold-primary)]" : ""
+                              }`}
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      <AnimatePresence initial={false}>
+                        {isSubOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden pl-12 flex flex-col gap-1 pb-2"
+                          >
+                            {subList.map((sub, sIdx) => {
+                              const subName = typeof sub === "string" ? sub : sub.name;
+                              const subKey = typeof sub === "string" ? `${cat.id}-${sIdx}` : (sub.id || sub.name);
+
+                              return (
+                                <Link
+                                  key={subKey}
+                                  to={`/category/${catSlug}?sub=${encodeURIComponent(subName)}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="text-[13px] py-1 text-[var(--whiold-text-muted)] hover:text-[var(--whiold-primary)] transition-colors"
+                                >
+                                  {subName}
+                                </Link>
+                              );
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
               </motion.div>
             )}
           </AnimatePresence>
