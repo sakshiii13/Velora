@@ -1,5 +1,5 @@
 import axios from "axios";
-import logo from "/logo.png";
+import logo from "/logo1.png";
 import { removeToken, removeRole, removeBannerShown } from "../utils/authStorage";
 import Swal from "sweetalert2";
 

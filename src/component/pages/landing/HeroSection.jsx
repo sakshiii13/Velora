@@ -210,15 +210,20 @@ const HeroSection = () => {
             </div>
 
             <div className="relative">
-              <h1
-                ref={headlineRef}
-                className="relative z-10 text-[42px] leading-[1.06] text-white sm:text-[58px] lg:text-[72px]"
-                style={{ fontFamily: "'Fraunces', serif", fontWeight: 500 }}
-              >
-                We Help  <em className="italic text-[#E8B98F]" style={{ fontWeight: 500 }}>India</em>,
-                <br />
-                Own, Lead & Distribute.
-              </h1>
+             <h1
+  ref={headlineRef}
+  className="relative z-10 text-[42px] leading-[1.06] text-white sm:text-[58px] lg:text-[72px]"
+  style={{ fontFamily: "'Fraunces', serif", fontWeight: 500 }}
+>
+  Discover What
+  <br />
+  <em
+    className="italic text-[#E8B98F]"
+    style={{ fontWeight: 500 }}
+  >
+    Feels Like You.
+  </em>
+</h1>
 
               {/* Stitch line — same signature motif, underlining "slow" */}
               <svg

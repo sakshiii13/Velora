@@ -10,7 +10,7 @@ import { Rating } from "@mui/material";
 
 const ProductShowcaseHero = ({
   onAdd,
-  bannerImage = "/banner.jpg",
+  bannerImage = "/banner1.png",
   eyebrow = "Curated Picks",
   heading = "Latest Arrivals",
   description = "Discover pieces made to bring warmth, texture and character to your everyday spaces.",
