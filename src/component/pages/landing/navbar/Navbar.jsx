@@ -125,7 +125,7 @@ const Navbar = () => {
         }}
       >
         Free shipping on orders above ₹2,999 · Use code{" "}
-        <span className="font-semibold">WHIOLD10</span> for 10% off ·{" "}
+        <span className="font-semibold">VELORA10</span> for 10% off ·{" "}
         <Link
           to="/register"
           className="underline font-bold hover:opacity-80 transition"
